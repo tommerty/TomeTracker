@@ -69,40 +69,47 @@ const DashboardPage = () => {
         <div className="container mx-auto px-4 flex flex-col h-dvh">
             <div className="sticky flex items-center top-0 w-full justify-between bg-muted px-3 rounded-b-xl shadow-lg z-50">
                 <div className="flex items-center gap-1">
-                    <h1 className="text-xl font-bold">Time Tracker</h1>
+                    <div className="flex items-center gap-1 mr-3">
+                        <img
+                            src="/icons/icon-192x192.png"
+                            className="rounded-lg w-7 h-7"
+                        />
+                        <h1 className="text-xl font-bold">Tome Tracker</h1>
+                    </div>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                className="flex items-center justify-normal w-36 h-full"
+                            >
+                                <span>
+                                    {isToday
+                                        ? "Today"
+                                        : selectedDate.toLocaleDateString()}
+                                </span>
+                                <ChevronDown className="ml-auto" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-1">
+                            <DayPicker
+                                selected={selectedDate}
+                                onSelect={handleDateChange}
+                            />
+                        </PopoverContent>
+                    </Popover>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
-                            <PlusCircle
-                                size="24"
-                                className="text-primary cursor-pointer"
-                            />
+                            <Button>
+                                <PlusCircle
+                                    size="24"
+                                    className="cursor-pointer"
+                                />
+                            </Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
                                 <DialogTitle>New Entry</DialogTitle>
                                 <div className="flex flex-col gap-2">
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button
-                                                variant="outline"
-                                                className="flex items-center justify-normal"
-                                            >
-                                                <span>
-                                                    {isToday
-                                                        ? "Today"
-                                                        : selectedDate.toLocaleDateString()}
-                                                </span>
-                                                <ChevronDown className="ml-auto" />
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-full p-1">
-                                            <DayPicker
-                                                selected={selectedDate}
-                                                onSelect={handleDateChange}
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-
                                     <TimeTracker
                                         selectedDate={selectedDate}
                                         onAddTimeEntry={handleAddTimeEntry}

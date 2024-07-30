@@ -39,19 +39,31 @@ const TimeTrackerSummary: React.FC<TimeTrackerSummaryProps> = ({
     return (
         <div className="flex items-center gap-1">
             <div>
-                <ToggleGroup
-                    type="multiple"
-                    value={selectedCategories}
-                    onValueChange={handleCategoryToggle}
-                    defaultValue={categories}
-                    className="bg-muted rounded-md p-1"
-                >
-                    {categories.map((category) => (
-                        <ToggleGroupItem key={category} value={category}>
-                            {category}
-                        </ToggleGroupItem>
-                    ))}
-                </ToggleGroup>
+                {categories && categories.length > 0 ? (
+                    <ToggleGroup
+                        type="multiple"
+                        value={selectedCategories}
+                        onValueChange={handleCategoryToggle}
+                        defaultValue={categories}
+                        className="bg-muted rounded-md p-1"
+                    >
+                        {categories.map((category) => (
+                            <ToggleGroupItem key={category} value={category}>
+                                {category}
+                            </ToggleGroupItem>
+                        ))}
+                    </ToggleGroup>
+                ) : (
+                    <ToggleGroup
+                        type="multiple"
+                        value={selectedCategories}
+                        onValueChange={handleCategoryToggle}
+                        defaultValue={categories}
+                        className="bg-muted rounded-md p-1 invisible"
+                    >
+                        <ToggleGroupItem value="blank">Blank</ToggleGroupItem>
+                    </ToggleGroup>
+                )}
             </div>
             <Label>Time: {(totalTime / 60).toFixed(2)} hours</Label>
         </div>

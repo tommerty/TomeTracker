@@ -1,0 +1,36 @@
+name: Version Check
+
+on:
+    pull_request:
+        branches:
+            - master
+        paths:
+            - "package.json"
+
+jobs:
+    check-version:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Get current version
+              id: current-version
+              run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+            - name: Get base branch version
+              id: base-version
+              run: |
+                  git checkout ${{ github.base_ref }}
+                  echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+            - name: Compare versions
+              id: compare
+              run: |
+                  if [ "${{ steps.current-version.outputs.version }}" = "${{ steps.base-version.outputs.version }}" ]; then
+                    echo "Version in package.json has not been updated"
+                    exit 1
+                  else
+                    echo "Version updated successfully"
+                  fi

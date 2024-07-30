@@ -1,0 +1,44 @@
+name: Check Version and Create Release
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "package.json"
+
+jobs:
+    check-version-and-release:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 2
+
+            - name: Get current package version
+              id: current-version
+              run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+            - name: Get previous package version
+              id: previous-version
+              run: |
+                  git checkout HEAD^1 package.json
+                  echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+            - name: Create Release
+              if: steps.current-version.outputs.version != steps.previous-version.outputs.version
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: v${{ steps.current-version.outputs.version }}
+                  release_name: Release v${{ steps.current-version.outputs.version }}
+                  draft: false
+                  prerelease: false
+
+            - name: Trigger publish workflow
+              if: steps.current-version.outputs.version != steps.previous-version.outputs.version
+              uses: peter-evans/repository-dispatch@v2
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  event-type: trigger-publish

@@ -67,8 +67,17 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
                 <Label htmlFor="category">Category</Label>
                 <div className="flex gap-1">
                     <Select onValueChange={onCategoryChange}>
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a category" />
+                        <SelectTrigger
+                            className="w-full"
+                            disabled={categories.length === 0}
+                        >
+                            <SelectValue
+                                placeholder={
+                                    categories.length === 0
+                                        ? "Click the plus button to add a category"
+                                        : "Select a category"
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {categories.map((category) => (
@@ -91,7 +100,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
                     </Select>
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button>
+                            <Button variant="outline">
                                 <Plus />
                             </Button>
                         </PopoverTrigger>
