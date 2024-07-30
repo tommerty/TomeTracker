@@ -1,6 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { format, startOfDay, addMinutes } from "date-fns";
+import {
+    format,
+    startOfDay,
+    addMinutes,
+    setHours,
+    setMinutes,
+    addHours,
+} from "date-fns";
 import { Label } from "./ui/label";
 import {
     Select,
@@ -20,13 +27,23 @@ interface TimeTrackerProps {
     onClose: () => void;
 }
 
+const getLatestEndTime = (selectedDate: Date) => {
+    const timeEntries = JSON.parse(localStorage.getItem("timeEntries") || "[]");
+    if (timeEntries.length > 0) {
+        const latestEntry = timeEntries[timeEntries.length - 1];
+        return new Date(latestEntry.endTime);
+    } else {
+        return setHours(setMinutes(startOfDay(selectedDate), 0), 7);
+    }
+};
 const TimeTracker: React.FC<TimeTrackerProps> = ({
     selectedDate,
     onAddTimeEntry,
     onClose,
 }) => {
-    const [startTime, setStartTime] = useState(startOfDay(selectedDate));
-    const [endTime, setEndTime] = useState(startOfDay(selectedDate));
+    const [startTime, setStartTime] = useState(getLatestEndTime(selectedDate));
+    const [endTime, setEndTime] = useState(() => addHours(startTime, 1));
+
     const [selectedCategory, setSelectedCategory] = useState("");
 
     const handleStartTimeChange = (value: string) => {
@@ -53,8 +70,8 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
         };
         onAddTimeEntry(newTimeEntry);
         onClose();
-        setStartTime(startOfDay(selectedDate));
-        setEndTime(startOfDay(selectedDate));
+        setStartTime(endTime);
+        setEndTime(setHours(setMinutes(startOfDay(selectedDate), 0), 7));
         setSelectedCategory("");
     };
 
@@ -68,7 +85,7 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
                     key={currentTime.getTime()}
                     value={currentTime.toISOString()}
                 >
-                    {format(currentTime, "hh:mm a")}
+                    {format(currentTime, "HH:mm")}
                 </SelectItem>
             );
             currentTime = addMinutes(currentTime, 15);
