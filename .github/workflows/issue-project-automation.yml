@@ -13,7 +13,7 @@ jobs:
         with:
           script: |
              const fs = require('fs')
-             const issueBody = fs.readFileSync(".github/ISSUE_RESPONSES/comment.md", "utf8")
+             const issueBody = fs.readFileSync(".github/ISSUE_COMMENT.md", "utf8")
              github.issues.createComment({
              issue_number: context.issue.number,
              owner: context.repo.owner,
