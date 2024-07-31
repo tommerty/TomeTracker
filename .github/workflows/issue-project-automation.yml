@@ -25,8 +25,17 @@ jobs:
         with:
           github-token: ${{ secrets.MY_PAT }}
           script: |
-            github.projects.createCard({
-            column_id: {{columnID}},
-            content_id: context.payload.issue.id,
-            content_type: "Issue"
-            });
+            const { data: project } = await github.rest.projects.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }).then(projects => projects.data.find(proj => proj.name === 'Tome Project Board'));
+
+            if (project) {
+              await github.rest.projects.createCard({
+                column_id: project.columns_url.split('/').pop(),
+                content_id: context.issue.id,
+                content_type: 'Issue'
+              });
+            } else {
+              core.setFailed('Project not found');
+            }
