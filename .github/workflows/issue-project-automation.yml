@@ -25,23 +25,22 @@ jobs:
               with:
                   github-token: ${{ secrets.MY_PAT }}
                   script: |
-                      const projects = await github.rest.projects.listForRepo({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo
-                      });
+                      const projectId = '13';
 
-                      if (projects && projects.data) {
-                        const project = projects.data.find(proj => proj.name === 'Tome Project Board');
+                      try {
+                        const project = await github.rest.projects.get({
+                          project_id: projectId
+                        });
 
                         if (project) {
                           await github.rest.projects.createCard({
-                            column_id: project.columns_url.split('/').pop(),
+                            column_id: project.data.columns[0].id,
                             content_id: context.issue.id,
                             content_type: 'Issue'
                           });
                         } else {
                           core.setFailed('Project not found');
                         }
-                      } else {
-                        core.setFailed('Failed to retrieve projects');
+                      } catch (error) {
+                        core.setFailed('Failed to add issue to project board');
                       }
