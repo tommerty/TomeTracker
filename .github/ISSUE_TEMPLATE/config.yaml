@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+    - name: 📃 Discussions
+      url: https://github.com/tommerty/TomeTracker/discussions
+      about: A discussion may be what you're looking for, which can be found here
+    - name: 🚀 My other projects
+      url: https://doras.to/tommerty/projects
+      about: Check out my other projects from my Doras profile

@@ -18,10 +18,10 @@ jobs:
 
                       if (labels.includes('bug')) {
                           comment = '🐛 Thanks for reporting this bug! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for tracking and will be investigated soon.';
-                      } else if (labels.includes('enhancement')) {
-                          comment = '💡 Thanks for the enhancement suggestion! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for consideration.';
+                      } else if (labels.includes('feature request')) {
+                          comment = '💡 Thanks for submitting a feature request! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for consideration. If this is a feature you'd like to work on, take a look at our [contribution guide](https://github.com/tommerty/TomeTracker#getting-started)';
                       } else {
-                          comment = '👋 Thanks for reporting! This has been added to the project board for logging and tracking. Be sure to check out the board [here](https://github.com/users/tommerty/projects/13)';
+                          comment = '👋 Thanks for opening this issue! This has been added to the [project board](https://github.com/users/tommerty/projects/13) for logging and tracking.';
                       }
 
                       github.rest.issues.createComment({

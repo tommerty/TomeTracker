@@ -1,0 +1,40 @@
+name: Documentation
+description: Suggest improvements or report issues in the documentation
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Thanks for taking the time to contribute to our documentation!
+    - type: textarea
+      id: description
+      attributes:
+          label: Describe the issue or suggestion
+          description: A clear and concise description of what the issue or suggestion is.
+          placeholder: Describe the documentation issue or suggestion.
+      validations:
+          required: true
+    - type: input
+      id: page-url
+      attributes:
+          label: Page URL
+          description: Provide the URL of the documentation page (if applicable).
+          placeholder: https://example.com/docs/page
+      validations:
+          required: false
+    - type: textarea
+      id: proposed-changes
+      attributes:
+          label: Proposed changes
+          description: Describe the proposed changes or improvements to the documentation.
+          placeholder: Provide your suggested changes or improvements.
+      validations:
+          required: false
+    - type: textarea
+      id: additional-context
+      attributes:
+          label: Additional context
+          description: Add any other context or screenshots about the documentation issue or suggestion here.
+      validations:
+          required: false
