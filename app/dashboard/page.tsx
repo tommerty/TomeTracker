@@ -97,7 +97,7 @@ const DashboardPage = () => {
 
     return (
         <div className="container mx-auto px-4 flex flex-col h-dvh">
-            <div className="sticky flex items-center top-0 w-full justify-between bg-muted px-3 rounded-b-xl shadow-lg z-50">
+            <div className="sticky flex items-center top-0 w-full justify-between bg-muted px-3 rounded-b-xl shadow-lg z-50 py-1">
                 <div className="flex items-center gap-1">
                     <div className="flex items-center gap-1 mr-3">
                         <img
@@ -106,27 +106,7 @@ const DashboardPage = () => {
                         />
                         <h1 className="text-xl font-bold">Tome Tracker</h1>
                     </div>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                className="flex items-center justify-normal w-36 h-full"
-                            >
-                                <span>
-                                    {isToday
-                                        ? "Today"
-                                        : selectedDate.toLocaleDateString()}
-                                </span>
-                                <ChevronDown className="ml-auto" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-1">
-                            <DayPicker
-                                selected={selectedDate}
-                                onSelect={handleDateChange}
-                            />
-                        </PopoverContent>
-                    </Popover>
+
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         {/* <DialogTrigger asChild>
                             <Button>
@@ -150,26 +130,47 @@ const DashboardPage = () => {
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
-                    {/* <CategoryEditor onCategoriesUpdated={handleCategoriesUpdated} /> */}
                 </div>
-                <div>
-                    <TimeTrackerSummary timeEntries={timeEntries} />
-                </div>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className="flex items-center justify-normal w-36 h-full"
+                        >
+                            <span>
+                                {isToday
+                                    ? "Today"
+                                    : selectedDate.toLocaleDateString()}
+                            </span>
+                            <ChevronDown className="ml-auto" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-1">
+                        <DayPicker
+                            selected={selectedDate}
+                            onSelect={handleDateChange}
+                        />
+                    </PopoverContent>
+                </Popover>
             </div>
-            <div className="flex gap-4 justify-between flex-1 h-full overflow-hidden py-3">
-                <div className="w-1/2 overflow-auto">
-                    <DailyBreakdown
-                        selectedDate={selectedDate}
-                        timeEntries={timeEntries}
-                    />
-                    <TimeEntryList
-                        selectedDate={selectedDate}
-                        timeEntries={timeEntries}
-                        onDeleteTimeEntry={handleDeleteTimeEntry}
-                        isLoading={isLoading}
-                    />
+            <div className="flex gap-4 relative justify-between h-full overflow-hidden py-3">
+                <div className="w-1/2 overflow-auto h-full relative space-y-9">
+                    <div className="">
+                        <DailyBreakdown
+                            selectedDate={selectedDate}
+                            timeEntries={timeEntries}
+                        />
+                    </div>
+                    <div className="rounded-xl overflow-hidden">
+                        <TimeEntryList
+                            selectedDate={selectedDate}
+                            timeEntries={timeEntries}
+                            onDeleteTimeEntry={handleDeleteTimeEntry}
+                            isLoading={isLoading}
+                        />
+                    </div>
                 </div>
-                <div className="w-full h-full overflow-hidden bg-muted rounded-xl">
+                <div className="w-full h-full overflow-hidden bg-muted rounded-xl py-3">
                     <WeekView
                         getCategoryColor={getCategoryColor}
                         timeEntries={timeEntries}

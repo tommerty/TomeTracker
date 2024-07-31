@@ -93,3 +93,11 @@
 .rbc-time-content {
     @apply !border-t-0;
 }
+
+.rbc-timeslot-group {
+    @apply !flex !flex-col;
+}
+
+.rbc-time-slot {
+    @apply !flex !items-center !place-content-center !flex-grow !h-full;
+}
