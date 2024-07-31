@@ -28,8 +28,8 @@ Time Tracker operates entirely on the client-side, utilizing the browser's local
 ## Getting Started
 
 1. Clone the repository
-2. Install dependencies: `npm install`
-3. Run the development server: `npm run dev`
+2. Install dependencies: `pnpm install`
+3. Run the development server: `pnpm dev`
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Contributing
