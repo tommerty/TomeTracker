@@ -13,34 +13,20 @@ jobs:
               with:
                   github-token: ${{ secrets.MY_PAT }}
                   script: |
+                      const labels = context.payload.issue.labels.map(label => label.name);
+                      let comment = '';
+
+                      if (labels.includes('bug')) {
+                          comment = '🐛 Thanks for reporting this bug! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for tracking and will be investigated soon.';
+                      } else if (labels.includes('enhancement')) {
+                          comment = '💡 Thanks for the enhancement suggestion! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for consideration.';
+                      } else {
+                          comment = '👋 Thanks for reporting! This has been added to the project board for logging and tracking. Be sure to check out the board [here](https://github.com/users/tommerty/projects/13)';
+                      }
+
                       github.rest.issues.createComment({
                         issue_number: context.issue.number,
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        body: '👋 Thanks for reporting! This has been added to the project board for logging and tracking. Be sure to check out the board [here](https://github.com/users/tommerty/projects/13)'
+                        body: comment
                       })
-            - name: Add issue to project board
-              if: contains(github.event.issue.labels.*.name, 'bug')
-              uses: actions/github-script@v7.0.1
-              with:
-                  github-token: ${{ secrets.MY_PAT }}
-                  script: |
-                      const projectId = '13';
-
-                      try {
-                        const project = await github.rest.projects.get({
-                          project_id: projectId
-                        });
-
-                        if (project) {
-                          await github.rest.projects.createCard({
-                            column_id: project.data.columns[0].id,
-                            content_id: context.issue.id,
-                            content_type: 'Issue'
-                          });
-                        } else {
-                          core.setFailed('Project not found');
-                        }
-                      } catch (error) {
-                        core.setFailed('Failed to add issue to project board');
-                      }
