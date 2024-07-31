@@ -23,11 +23,23 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import DailyCalendarView from "@/components/DailyCalendarView";
+import { WeekView } from "@/components/weekly/Calendar";
+import CategoryEditor from "@/components/category/CategoryEditor";
+import DailyBreakdown from "@/components/category/DailyBreakdown";
+
+type Category = {
+    name: string;
+    color: string;
+};
 
 const DashboardPage = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedSlot, setSelectedSlot] = useState<
+        { start: Date; end: Date } | undefined
+    >(undefined);
     const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
     const today = new Date();
 
     const isToday = selectedDate.toDateString() === today.toDateString();
@@ -65,6 +77,24 @@ const DashboardPage = () => {
     };
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+    const handleSelectSlot = (slotInfo: any) => {
+        const { start, end } = slotInfo;
+        setSelectedSlot({ start, end });
+        setIsDialogOpen(true);
+    };
+
+    const [categories, setCategories] = useState<Category[]>([]);
+    useEffect(() => {
+        const savedCategories = localStorage.getItem("timeTrackerCategories");
+        if (savedCategories) {
+            setCategories(JSON.parse(savedCategories));
+        }
+    }, []);
+    const getCategoryColor = (categoryName: string) => {
+        const category = categories.find((cat) => cat.name === categoryName);
+        return category ? category.color : "#000000"; // Default color if not found
+    };
+
     return (
         <div className="container mx-auto px-4 flex flex-col h-dvh">
             <div className="sticky flex items-center top-0 w-full justify-between bg-muted px-3 rounded-b-xl shadow-lg z-50">
@@ -98,14 +128,14 @@ const DashboardPage = () => {
                         </PopoverContent>
                     </Popover>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <DialogTrigger asChild>
+                        {/* <DialogTrigger asChild>
                             <Button>
                                 <PlusCircle
                                     size="24"
                                     className="cursor-pointer"
                                 />
                             </Button>
-                        </DialogTrigger>
+                        </DialogTrigger> */}
                         <DialogContent>
                             <DialogHeader>
                                 <DialogTitle>New Entry</DialogTitle>
@@ -114,11 +144,13 @@ const DashboardPage = () => {
                                         selectedDate={selectedDate}
                                         onAddTimeEntry={handleAddTimeEntry}
                                         onClose={() => setIsDialogOpen(false)}
+                                        selectedSlot={selectedSlot}
                                     />
                                 </div>
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
+                    {/* <CategoryEditor onCategoriesUpdated={handleCategoriesUpdated} /> */}
                 </div>
                 <div>
                     <TimeTrackerSummary timeEntries={timeEntries} />
@@ -126,6 +158,10 @@ const DashboardPage = () => {
             </div>
             <div className="flex gap-4 justify-between flex-1 h-full overflow-hidden py-3">
                 <div className="w-1/2 overflow-auto">
+                    <DailyBreakdown
+                        selectedDate={selectedDate}
+                        timeEntries={timeEntries}
+                    />
                     <TimeEntryList
                         selectedDate={selectedDate}
                         timeEntries={timeEntries}
@@ -133,10 +169,12 @@ const DashboardPage = () => {
                         isLoading={isLoading}
                     />
                 </div>
-                <div className="w-1/2 h-full overflow-hidden bg-muted rounded-xl">
-                    <DailyCalendarView
-                        selectedDate={selectedDate}
+                <div className="w-full h-full overflow-hidden bg-muted rounded-xl">
+                    <WeekView
+                        getCategoryColor={getCategoryColor}
                         timeEntries={timeEntries}
+                        onSelectSlot={handleSelectSlot}
+                        selectedDate={selectedDate}
                     />
                 </div>
             </div>

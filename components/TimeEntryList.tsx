@@ -36,13 +36,10 @@ const TimeEntryList: React.FC<TimeEntryListProps> = ({
     useEffect(() => {
         setIsLoading(initialIsLoading);
     }, [initialIsLoading]);
-    const filteredEntries = timeEntries
-        .filter(
-            (entry) =>
-                entry.date instanceof Date &&
-                entry.date.toDateString() === selectedDate.toDateString()
-        )
-        .sort((a, b) => compareAsc(a.startTime, b.startTime));
+    const filteredEntries = timeEntries.filter(
+        (entry) =>
+            new Date(entry.date).toDateString() === selectedDate.toDateString()
+    );
 
     const [categories, setCategories] = useState<Category[]>([]);
     useEffect(() => {
@@ -107,10 +104,13 @@ const TimeEntryList: React.FC<TimeEntryListProps> = ({
                         {filteredEntries.map((entry) => (
                             <TableRow key={entry.id}>
                                 <TableCell>
-                                    {format(entry.startTime, "hh:mm a")}
+                                    {format(
+                                        new Date(entry.startTime),
+                                        "h:mm a"
+                                    )}
                                 </TableCell>
                                 <TableCell>
-                                    {format(entry.endTime, "hh:mm a")}
+                                    {format(new Date(entry.endTime), "h:mm a")}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex items-center">
