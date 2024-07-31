@@ -1,7 +1,8 @@
-export interface TimeEntry {
+export type TimeEntry = {
     id: string;
-    date: Date;
+    date: string;
+    category: string;
+    description: string;
     startTime: Date;
     endTime: Date;
-    category: string;
-}
+};

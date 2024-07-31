@@ -67,3 +67,37 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* Calendar */
+
+.rbc-time-view {
+    @apply !border-0;
+}
+
+.rbc-today {
+    @apply !bg-card;
+}
+
+.rbc-timeslot-group,
+.rbc-time-slot {
+    @apply !border-border;
+}
+.rbc-current-time-indicator {
+    @apply !bg-green-400 !h-0.5;
+}
+
+.rbc-time-header {
+    @apply !hidden;
+}
+
+.rbc-time-content {
+    @apply !border-t-0;
+}
+
+.rbc-timeslot-group {
+    @apply !flex !flex-col;
+}
+
+.rbc-time-slot {
+    @apply !flex !items-center !place-content-center !flex-grow !h-full;
+}

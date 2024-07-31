@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     format,
     startOfDay,
@@ -20,79 +20,98 @@ import { Button } from "./ui/button";
 import { TimeEntry } from "@/types/TimeEntry";
 import CategoryManager from "./CategoryManager";
 import { Plus } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
 
 interface TimeTrackerProps {
     selectedDate: Date;
     onAddTimeEntry: (entry: TimeEntry) => void;
     onClose: () => void;
+    selectedSlot?: { start: Date; end: Date };
 }
 
 const getLatestEndTime = (selectedDate: Date) => {
     const timeEntries = JSON.parse(localStorage.getItem("timeEntries") || "[]");
     if (timeEntries.length > 0) {
         const latestEntry = timeEntries[timeEntries.length - 1];
-        return new Date(latestEntry.endTime);
+        return new Date(latestEntry.end);
     } else {
         return setHours(setMinutes(startOfDay(selectedDate), 0), 7);
     }
 };
+
 const TimeTracker: React.FC<TimeTrackerProps> = ({
     selectedDate,
     onAddTimeEntry,
     onClose,
+    selectedSlot,
 }) => {
-    const [startTime, setStartTime] = useState(getLatestEndTime(selectedDate));
-    const [endTime, setEndTime] = useState(() => addHours(startTime, 1));
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState("");
+    const [startTime, setStartTime] = useState(selectedDate);
+    const [endTime, setEndTime] = useState(selectedDate);
 
-    const [selectedCategory, setSelectedCategory] = useState("");
+    useEffect(() => {
+        if (selectedSlot) {
+            setStartTime(selectedSlot.start);
+            setEndTime(selectedSlot.end);
+        } else {
+            setStartTime(selectedDate);
+            setEndTime(selectedDate);
+        }
+    }, [selectedDate, selectedSlot]);
+
+    const handleCategoryChange = (newCategory: string) => {
+        setCategory(newCategory);
+    };
 
     const handleStartTimeChange = (value: string) => {
-        const selectedTime = new Date(value);
-        setStartTime(selectedTime);
+        const [hours, minutes] = value.split(":");
+        const newStartTime = setHours(
+            setMinutes(startTime, parseInt(minutes)),
+            parseInt(hours)
+        );
+        setStartTime(newStartTime);
     };
 
     const handleEndTimeChange = (value: string) => {
-        const selectedTime = new Date(value);
-        setEndTime(selectedTime);
-    };
-
-    const handleCategoryChange = (value: string) => {
-        setSelectedCategory(value);
-    };
-
-    const handleSaveTimeEntry = () => {
-        const newTimeEntry: TimeEntry = {
-            id: Date.now().toString(),
-            date: selectedDate,
-            startTime,
-            endTime,
-            category: selectedCategory,
-        };
-        onAddTimeEntry(newTimeEntry);
-        onClose();
-        setStartTime(endTime);
-        setEndTime(setHours(setMinutes(startOfDay(selectedDate), 0), 7));
-        setSelectedCategory("");
+        const [hours, minutes] = value.split(":");
+        const newEndTime = setHours(
+            setMinutes(endTime, parseInt(minutes)),
+            parseInt(hours)
+        );
+        setEndTime(newEndTime);
     };
 
     const generateTimeOptions = () => {
         const options = [];
         let currentTime = startOfDay(selectedDate);
-
-        while (currentTime < addMinutes(startOfDay(selectedDate), 1440)) {
+        while (currentTime < addHours(startOfDay(selectedDate), 24)) {
             options.push(
                 <SelectItem
-                    key={currentTime.getTime()}
-                    value={currentTime.toISOString()}
+                    key={currentTime.toISOString()}
+                    value={format(currentTime, "HH:mm")}
                 >
-                    {format(currentTime, "HH:mm")}
+                    {format(currentTime, "h:mm a")}
                 </SelectItem>
             );
             currentTime = addMinutes(currentTime, 15);
         }
-
         return options;
     };
+
+    const handleSaveTimeEntry = () => {
+        const newEntry: TimeEntry = {
+            id: uuidv4(),
+            date: selectedDate.toISOString(),
+            category,
+            description,
+            startTime: startTime,
+            endTime: endTime,
+        };
+        onAddTimeEntry(newEntry);
+        onClose();
+    };
+
     return (
         <div>
             <div className="flex gap-2 justify-start">
@@ -100,10 +119,12 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
                     <Label htmlFor="startTime">Start</Label>
                     <Select
                         onValueChange={handleStartTimeChange}
-                        defaultValue={startTime.toISOString()}
+                        defaultValue={format(startTime, "HH:mm")}
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select start time" />
+                            <SelectValue placeholder="Select start time">
+                                {format(startTime, "h:mm a")}
+                            </SelectValue>
                         </SelectTrigger>
                         <SelectContent>{generateTimeOptions()}</SelectContent>
                     </Select>
@@ -112,10 +133,12 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
                     <Label htmlFor="endTime">End</Label>
                     <Select
                         onValueChange={handleEndTimeChange}
-                        defaultValue={endTime.toISOString()}
+                        defaultValue={format(endTime, "HH:mm")}
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select end time" />
+                            <SelectValue placeholder="Select end time">
+                                {format(endTime, "h:mm a")}
+                            </SelectValue>
                         </SelectTrigger>
                         <SelectContent>{generateTimeOptions()}</SelectContent>
                     </Select>
