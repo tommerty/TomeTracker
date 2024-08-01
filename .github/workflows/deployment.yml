@@ -6,14 +6,18 @@ on:
 
 jobs:
     trigger-deploy:
-        if: github.event.package.package_version.name == 'ghcr.io/tommerty/tometracker' && github.event.package.package_version.version == 'latest'
         runs-on: ubuntu-latest
 
         steps:
+            - name: Print package information
+              run: |
+                  echo "Package name: ${{ github.event.package.package_version.name }}"
+                  echo "Package version: ${{ github.event.package.package_version.version }}"
+
             - name: Trigger Deploy
               env:
                   TOME_DEPLOY_WEBHOOK_URL: ${{ secrets.TOME_DEPLOY_WEBHOOK_URL }}
                   TOME_DEPLOY: ${{ secrets.TOME_DEPLOY }}
               run: |
                   curl --request GET '${{ secrets.TOME_DEPLOY_WEBHOOK_URL }}' \
-                  --header 'Authorization: Bearer ${{ secrets.TOME_DEPLOY }}'
+                    --header 'Authorization: Bearer ${{ secrets.TOME_DEPLOY }}'
