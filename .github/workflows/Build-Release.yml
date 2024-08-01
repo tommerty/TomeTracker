@@ -24,7 +24,7 @@ jobs:
               with:
                   platforms: linux/arm64
                   push: true
-                  tags: user/app:latest
+                  tags: ghcr.io/${{ github.repository_owner }}/tometracker:latest
             - name: Print package information
               run: |
                   echo "Package name: ${{ github.event.package.package_version.name }}"
