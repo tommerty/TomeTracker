@@ -6,7 +6,7 @@ on:
 
 jobs:
     trigger-deploy:
-        if: github.event.package.package_version.name == 'ghcr.io/tommerty/TomeTracker' && github.event.package.package_version.version == 'latest'
+        if: github.event.package.package_version.name == 'ghcr.io/tommerty/tometracker' && github.event.package.package_version.version == 'latest'
         runs-on: ubuntu-latest
 
         steps:
