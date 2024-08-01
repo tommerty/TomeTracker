@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-    title: "Tome Time - Dashboard",
+    title: "Tome Tracker",
     description: "Tommerty's time tracker",
 };
 

@@ -7,12 +7,23 @@ import TimeEntryList from "@/components/TimeEntryList";
 import { saveTimeEntries, loadTimeEntries } from "@/lib/timeEntryStorage";
 import { TimeEntry } from "@/types/TimeEntry";
 import {
+    IconArrowLeft,
+    IconBrandGithub,
+    IconLifebuoy,
+} from "@tabler/icons-react";
+import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ChevronDown, PlusCircle } from "lucide-react";
+import {
+    ArrowDown,
+    ChevronDown,
+    Github,
+    LucideGithub,
+    PlusCircle,
+} from "lucide-react";
 import TimeTrackerSummary from "@/components/TimeTrackerSummary";
 import {
     Dialog,
@@ -26,6 +37,8 @@ import DailyCalendarView from "@/components/DailyCalendarView";
 import { WeekView } from "@/components/weekly/Calendar";
 import CategoryEditor from "@/components/category/CategoryEditor";
 import DailyBreakdown from "@/components/category/DailyBreakdown";
+import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 type Category = {
     name: string;
@@ -178,6 +191,42 @@ const DashboardPage = () => {
                         selectedDate={selectedDate}
                     />
                 </div>
+            </div>
+            <div className="bg-muted px-2 py-1 rounded-t-xl flex items-center gap-2 justify-between">
+                <div className="flex items-center gap-2 h-full">
+                    <Link
+                        href="https://github.com/users/tommerty/projects/13?query=sort%3Aupdated-desc+is%3Aopen"
+                        className="flex items-center gap-1"
+                        target="_blank"
+                    >
+                        <IconLifebuoy className="size-7" />
+                    </Link>
+                    <Separator
+                        orientation="vertical"
+                        className="bg-foreground"
+                    />
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href="https://github.com/tommerty/TomeTracker"
+                            className="flex items-center gap-1"
+                            target="_blank"
+                        >
+                            <IconBrandGithub className="size-7" />
+                            <span className="font-bold">GitHub</span>
+                        </Link>
+                    </div>
+                </div>
+                <Link
+                    href="https://doras.to/tommerty"
+                    target="_blank"
+                    className="flex items-center gap-1"
+                >
+                    <img
+                        className="size-3"
+                        src="https://doras.to/api/user/tommerty/pic"
+                    />
+                    <span className="font-bold text-xs">by @tommerty</span>
+                </Link>
             </div>
         </div>
     );

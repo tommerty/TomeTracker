@@ -1,6 +1,26 @@
-# Tome Tracker
+<!-- <h1 align="center">
+    <a href="https://amplication.com/#gh-dark-mode-only">
+    <img src="public/icons/icon-192x192.png" width="50" alt="Tome logo" />
+    </a>
+</h1> -->
 
-A simple and efficient time tracking application built with Next.js 14 and Tailwind CSS.
+<p align="center">
+  <b align="center">Tome<br>
+  A time tracker that's only for you</b>
+</p>
+
+<h4 align="center">
+  <a href="https://github.com/tommerty/TomeTracker/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors-anon/tommerty/TomeTracker?color=purple&style=round-square" alt="contributors" style="height: 20px;">
+  </a>
+  <a href="https://twitter.com/tommerty">
+    <img src="https://img.shields.io/twitter/follow/tommerty?style=social" alt="twitter" style="height: 20px;">
+  </a>
+</h4>
+
+<p align="center">
+    <img src="/public/icons/banner.webp" alt="dashboard"/>
+</p>
 
 ## Overview
 
@@ -35,3 +55,9 @@ Time Tracker operates entirely on the client-side, utilizing the browser's local
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Contributors
+
+<a href="https://github.com/tommerty/TomeTracker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tommerty/TomeTracker" />
+</a>
