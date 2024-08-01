@@ -30,7 +30,7 @@ jobs:
               uses: docker/build-push-action@v6.5.0
               with:
                   context: .
-                  platforms: linux/amd64,linux/arm64
+                  platforms: linux/arm64
                   push: true
                   tags: ghcr.io/${{ github.repository_owner }}/tometracker:latest
 
@@ -44,5 +44,4 @@ jobs:
                   curl -X POST \
                     -H "Content-Type: application/json" \
                     -H "Authorization: Bearer $TOME_DEPLOY" \
-                    -d '{"event_type": "package_published"}' \
                     $TOME_DEPLOY_WEBHOOK_URL
