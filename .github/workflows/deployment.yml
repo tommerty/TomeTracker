@@ -1,0 +1,21 @@
+name: Deploy Trigger
+
+on:
+    registry_package:
+        types: [published]
+
+jobs:
+    trigger-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Trigger Deploy
+              env:
+                  TOME_DEPLOY_WEBHOOK_URL: ${{ secrets.TOME_DEPLOY_WEBHOOK_URL }}
+                  TOME_DEPLOY: ${{ secrets.TOME_DEPLOY }}
+              run: |
+                  curl -X POST \
+                    -H "Content-Type: application/json" \
+                    -H "Authorization: Bearer $TOME_DEPLOY" \
+                    -d '{"event_type": "package_published"}' \
+                    $TOME_DEPLOY_WEBHOOK_URL
