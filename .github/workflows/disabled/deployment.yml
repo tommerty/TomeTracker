@@ -1,9 +1,7 @@
 name: Deploy Trigger
 
 on:
-    registry_package:
-        types: [published]
-
+    worflow_dispatch:
 jobs:
     trigger-deploy:
         runs-on: ubuntu-latest
