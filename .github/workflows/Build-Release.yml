@@ -36,12 +36,3 @@ jobs:
 
             - name: Image digest
               run: echo ${{ steps.docker_build.outputs.digest }}
-            - name: Trigger Deploy
-              env:
-                  TOME_DEPLOY_WEBHOOK_URL: ${{ secrets.TOME_DEPLOY_WEBHOOK_URL }}
-                  TOME_DEPLOY: ${{ secrets.TOME_DEPLOY }}
-              run: |
-                  curl -X POST \
-                    -H "Content-Type: application/json" \
-                    -H "Authorization: Bearer $TOME_DEPLOY" \
-                    $TOME_DEPLOY_WEBHOOK_URL
