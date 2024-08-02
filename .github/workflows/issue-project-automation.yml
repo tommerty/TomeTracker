@@ -13,16 +13,7 @@ jobs:
               with:
                   github-token: ${{ secrets.MY_PAT }}
                   script: |
-                      const labels = context.payload.issue.labels.map(label => label.name);
-                      let comment = '';
-
-                      if (labels.includes('bug')) {
-                          comment = '🐛 Thanks for reporting this bug! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for tracking and will be investigated soon.';
-                      } else if (labels.includes('feature request')) {
-                          comment = '💡 Thanks for submitting a feature request! It has been added to the [project board](https://github.com/users/tommerty/projects/13) for consideration. If this is a feature you'd like to work on, take a look at our [contribution guide](https://github.com/tommerty/TomeTracker#getting-started)';
-                      } else {
-                          comment = '👋 Thanks for opening this issue! This has been added to the [project board](https://github.com/users/tommerty/projects/13) for logging and tracking.';
-                      }
+                      const comment = 'Thanks for opening an issue. It has been added to the [project board](https://github.com/users/tommerty/projects/13).';
 
                       github.rest.issues.createComment({
                         issue_number: context.issue.number,
