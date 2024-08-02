@@ -21,6 +21,7 @@ import { TimeEntry } from "@/types/TimeEntry";
 import CategoryManager from "./CategoryManager";
 import { Plus } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 interface TimeTrackerProps {
     selectedDate: Date;
@@ -111,6 +112,19 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
         onAddTimeEntry(newEntry);
         onClose();
     };
+    const calculateTotalHours = (start: Date, end: Date) => {
+        const duration = moment.duration(moment(end).diff(moment(start)));
+        const hours = duration.hours();
+        const minutes = duration.minutes();
+
+        if (minutes === 0) {
+            return `${hours} hour${hours === 1 ? "" : "s"}`;
+        } else {
+            return `${hours} hour${hours === 1 ? "" : "s"} ${minutes} minute${
+                minutes === 1 ? "" : "s"
+            }`;
+        }
+    };
 
     return (
         <div>
@@ -129,6 +143,7 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
                         <SelectContent>{generateTimeOptions()}</SelectContent>
                     </Select>
                 </div>
+
                 <div className="w-full">
                     <Label htmlFor="endTime">End</Label>
                     <Select
@@ -143,6 +158,11 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({
                         <SelectContent>{generateTimeOptions()}</SelectContent>
                     </Select>
                 </div>
+            </div>
+            <div className="mt-4">
+                <p className="text-lg font-semibold">
+                    {calculateTotalHours(startTime, endTime)}
+                </p>
             </div>
             <CategoryManager onCategoryChange={handleCategoryChange} />
             <div className="mt-4">

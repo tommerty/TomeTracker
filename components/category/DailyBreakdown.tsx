@@ -6,6 +6,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { Badge } from "../ui/badge";
 import { Check, X } from "lucide-react";
 import { Category } from "@/types/Category";
+import moment from "moment";
 
 interface DailyBreakdownProps {
     selectedDate: Date;
@@ -87,6 +88,19 @@ const DailyBreakdown: React.FC<DailyBreakdownProps> = ({
         return "#000000"; // Default color if no categories are saved
     };
 
+    const formatDuration = (duration: number): string => {
+        const hours = Math.floor(duration);
+        const minutes = Math.round((duration - hours) * 60);
+
+        if (minutes === 0) {
+            return `${hours} hr${hours === 1 ? "" : "s"}`;
+        } else {
+            return `${hours} hr${hours === 1 ? "" : "s"} ${minutes} min${
+                minutes === 1 ? "" : "s"
+            }`;
+        }
+    };
+
     return (
         <div className="p-4 bg-card rounded-lg shadow">
             <h2 className="text-xl font-bold mb-4">Daily Breakdown</h2>
@@ -110,13 +124,13 @@ const DailyBreakdown: React.FC<DailyBreakdownProps> = ({
                             {category}
                         </Toggle>
                     </div>
-                    <span>{duration.toFixed(1)} hours</span>
+                    <span>{formatDuration(duration)}</span>
                 </div>
             ))}
             <div className="mt-4 pt-2 border-t">
                 <div className="flex justify-between font-bold">
                     <span>Total</span>
-                    <span>{total.toFixed(1)} hours</span>
+                    <span>{formatDuration(total)}</span>
                 </div>
             </div>
         </div>

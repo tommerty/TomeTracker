@@ -80,7 +80,7 @@
 
 .rbc-timeslot-group,
 .rbc-time-slot {
-    @apply !border-border;
+    @apply !border-border !border-t-0;
 }
 .rbc-current-time-indicator {
     @apply !bg-green-400 !h-0.5;

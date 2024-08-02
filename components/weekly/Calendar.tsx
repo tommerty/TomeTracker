@@ -58,6 +58,8 @@ export const WeekView: React.FC<WeekViewProps> = ({
                 className="overflow-hidden !border-0"
                 eventPropGetter={eventStyleGetter}
                 date={selectedDate}
+                timeslots={4}
+                step={15}
             />
         </div>
     );
