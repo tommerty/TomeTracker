@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import TodoInput from "../../components/todo/ToDoInput";
 import TodoList from "../../components/todo/ToDoList";
 import { loadTodos, saveTodos } from "../../lib/todoEntryStorage";
@@ -11,7 +11,7 @@ type Todo = {
     completed: boolean;
 };
 
-const TodoPage = () => {
+export default function Page() {
     const [todos, setTodos] = useState<Todo[]>(() => loadTodos());
 
     useEffect(() => {
@@ -39,14 +39,14 @@ const TodoPage = () => {
         <div className="flex flex-col gap-3 h-full overflow-hidden">
             <TodoInput addTodo={addTodo} />
             <div className="flex flex-col gap-3 overflow-y-auto">
-                <TodoList
-                    todos={todos}
-                    removeTodo={removeTodo}
-                    toggleTodo={toggleTodo}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <TodoList
+                        todos={todos}
+                        removeTodo={removeTodo}
+                        toggleTodo={toggleTodo}
+                    />
+                </Suspense>
             </div>
         </div>
     );
-};
-
-export default TodoPage;
+}

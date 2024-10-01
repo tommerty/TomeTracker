@@ -26,6 +26,7 @@ export default function RootLayout({
                 sizes="192x192"
             />
             <body
+                suppressHydrationWarning
                 className={cn(
                     "min-h-screen bg-background font-sans antialiased dark max-w-screen-2xl mx-auto",
                     montserrat.variable
