@@ -36,13 +36,15 @@ const TodoPage = () => {
     };
 
     return (
-        <div className="flex flex-col gap-3 h-full">
+        <div className="flex flex-col gap-3 h-full overflow-hidden">
             <TodoInput addTodo={addTodo} />
-            <TodoList
-                todos={todos}
-                removeTodo={removeTodo}
-                toggleTodo={toggleTodo}
-            />
+            <div className="flex flex-col gap-3 overflow-y-auto">
+                <TodoList
+                    todos={todos}
+                    removeTodo={removeTodo}
+                    toggleTodo={toggleTodo}
+                />
+            </div>
         </div>
     );
 };
