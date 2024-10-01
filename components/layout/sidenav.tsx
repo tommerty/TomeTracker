@@ -114,19 +114,18 @@ const TitleSection = ({ open }: { open: boolean }) => {
             <div className="flex items-center justify-between rounded-md">
                 <div className="flex items-center gap-2">
                     {open && (
-                        <>
+                        <motion.div
+                            layout
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.125 }}
+                            className="flex items-center gap-2"
+                        >
                             <Logo />
-                            <motion.div
-                                layout
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.125 }}
-                            >
-                                <span className="block text-sm font-bold">
-                                    Tome Tracker
-                                </span>
-                            </motion.div>
-                        </>
+                            <span className="block text-sm font-bold">
+                                Tome Tracker
+                            </span>
+                        </motion.div>
                     )}
                 </div>
             </div>
