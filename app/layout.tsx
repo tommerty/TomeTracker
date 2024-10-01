@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SideNav } from "@/components/layout/sidenav";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -16,7 +17,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <link rel="manifest" href="/manifest.json" />
             <link
                 rel="icon"
@@ -26,11 +27,11 @@ export default function RootLayout({
             />
             <body
                 className={cn(
-                    "min-h-screen bg-background font-sans antialiased dark",
+                    "min-h-screen bg-background font-sans antialiased dark max-w-screen-2xl mx-auto",
                     montserrat.variable
                 )}
             >
-                {children}
+                <SideNav>{children}</SideNav>
             </body>
         </html>
     );
