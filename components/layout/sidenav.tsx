@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import * as Icons from "@tabler/icons-react";
 
 import { motion } from "framer-motion";
+import { Separator } from "../ui/separator";
 interface Props {
     children: React.ReactNode;
 }
@@ -23,14 +24,17 @@ const Sidebar = () => {
     return (
         <motion.nav
             layout
-            className="sticky top-0 h-screen shrink-0 border-r bg-background p-2 z-[999]"
+            className="sticky top-0 h-dvh flex flex-col gap-2 max-h-full shrink-0 border-r bg-background p-2 z-[999]"
             style={{
                 width: open ? "225px" : "fit-content",
             }}
         >
-            <TitleSection open={open} />
+            <div className="flex items-center justify-between border-b pb-3">
+                <TitleSection open={open} />
+                <ToggleClose open={open} setOpen={setOpen} />
+            </div>
 
-            <div className="space-y-1">
+            <div className="flex flex-col gap-2">
                 <Option
                     Icon={Icons.IconClock}
                     title="Time Tracking"
@@ -46,8 +50,16 @@ const Sidebar = () => {
                     open={open}
                 />
             </div>
-
-            <ToggleClose open={open} setOpen={setOpen} />
+            <div className="flex flex-col gap-2 mt-auto">
+                <Separator />
+                <Option
+                    Icon={Icons.IconBrandGithub}
+                    title="GitHub"
+                    selected={selected}
+                    setSelected={setSelected}
+                    open={open}
+                />
+            </div>
         </motion.nav>
     );
 };
@@ -98,21 +110,23 @@ const Option = ({
 
 const TitleSection = ({ open }: { open: boolean }) => {
     return (
-        <div className="mb-3 border-b pb-3">
+        <div className="">
             <div className="flex items-center justify-between rounded-md">
                 <div className="flex items-center gap-2">
-                    <Logo />
                     {open && (
-                        <motion.div
-                            layout
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.125 }}
-                        >
-                            <span className="block text-sm font-bold">
-                                Tome Tracker
-                            </span>
-                        </motion.div>
+                        <>
+                            <Logo />
+                            <motion.div
+                                layout
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.125 }}
+                            >
+                                <span className="block text-sm font-bold">
+                                    Tome Tracker
+                                </span>
+                            </motion.div>
+                        </>
                     )}
                 </div>
             </div>
@@ -143,30 +157,12 @@ const ToggleClose = ({
         <motion.button
             layout
             onClick={() => setOpen((pv) => !pv)}
-            className="absolute bottom-0 left-0 right-0 border-t transition-colors hover:bg-accent"
+            className=" transition-colors hover:bg-accent"
         >
             <div className="flex items-center p-2">
-                <motion.div
-                    layout
-                    className="grid size-10 place-content-center text-lg"
-                >
-                    <Icons.IconChevronRight
-                        className={`transition-transform ${
-                            open && "rotate-180"
-                        }`}
-                    />
-                </motion.div>
-                {open && (
-                    <motion.span
-                        layout
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.125 }}
-                        className="text-xs font-medium"
-                    >
-                        Hide
-                    </motion.span>
-                )}
+                <Icons.IconChevronRight
+                    className={`transition-transform ${open && "rotate-180"}`}
+                />
             </div>
         </motion.button>
     );

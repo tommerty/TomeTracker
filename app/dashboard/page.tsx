@@ -193,42 +193,6 @@ const DashboardPage = () => {
                     />
                 </div>
             </div>
-            <div className="bg-muted px-2 py-1 rounded-t-xl flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 h-full">
-                    <Link
-                        href="https://github.com/users/tommerty/projects/13?query=sort%3Aupdated-desc+is%3Aopen"
-                        className="flex items-center gap-1"
-                        target="_blank"
-                    >
-                        <IconLifebuoy className="size-7" />
-                    </Link>
-                    <Separator
-                        orientation="vertical"
-                        className="bg-foreground"
-                    />
-                    <div className="flex items-center gap-2">
-                        <Link
-                            href="https://github.com/tommerty/TomeTracker"
-                            className="flex items-center gap-1"
-                            target="_blank"
-                        >
-                            <IconBrandGithub className="size-7" />
-                            <span className="font-bold">GitHub</span>
-                        </Link>
-                    </div>
-                </div>
-                <Link
-                    href="https://doras.to/tommerty"
-                    target="_blank"
-                    className="flex items-center gap-1"
-                >
-                    <img
-                        className="size-3"
-                        src="https://doras.to/api/user/tommerty/pic"
-                    />
-                    <span className="font-bold text-xs">by @tommerty</span>
-                </Link>
-            </div>
         </div>
     );
 };
