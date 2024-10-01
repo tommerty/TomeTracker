@@ -118,6 +118,7 @@ const DashboardPage = () => {
                             className="rounded-lg w-7 h-7"
                         />
                         <h1 className="text-xl font-bold">Tome Tracker</h1>
+                        <Link href={"/dashboard"}>Time</Link>
                     </div>
 
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
