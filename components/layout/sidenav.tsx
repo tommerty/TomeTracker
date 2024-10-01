@@ -104,7 +104,7 @@ const Option = ({
 
     return (
         <Link {...linkProps}>
-            <motion.a
+            <motion.button
                 layout
                 onClick={handleClick}
                 className={`relative flex h-10 w-full items-center rounded-md transition-colors ${
@@ -130,7 +130,7 @@ const Option = ({
                         {title}
                     </motion.span>
                 )}
-            </motion.a>
+            </motion.button>
         </Link>
     );
 };
