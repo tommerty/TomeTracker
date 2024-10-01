@@ -31,6 +31,7 @@ const Sidebar = () => {
 
     return (
         <motion.nav
+            suppressHydrationWarning
             layout
             className="sticky top-0 h-dvh flex flex-col gap-2 max-h-full shrink-0 border-r bg-background p-2 z-[999]"
             style={{
