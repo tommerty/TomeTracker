@@ -1,4 +1,8 @@
 import React from "react";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
+import { IconTrash } from "@tabler/icons-react";
 
 type Todo = {
     id: number;
@@ -24,20 +28,27 @@ const TodoList: React.FC<TodoListProps> = ({
                     key={todo.id}
                     className="flex items-center gap-2 p-2 border-b"
                 >
-                    <input
-                        type="checkbox"
+                    <Checkbox
+                        id={todo.id.toString()}
                         checked={todo.completed}
-                        onChange={() => toggleTodo(todo.id)}
+                        onCheckedChange={() => toggleTodo(todo.id)}
                     />
-                    <span className={todo.completed ? "line-through" : ""}>
-                        {todo.text}
-                    </span>
-                    <button
-                        onClick={() => removeTodo(todo.id)}
-                        className="ml-auto text-red-500"
+                    <Label
+                        htmlFor={todo.id.toString()}
+                        className={` font-bold text-base ${
+                            todo.completed ? "line-through" : ""
+                        }`}
                     >
-                        Remove
-                    </button>
+                        {todo.text}
+                    </Label>
+                    <Button
+                        onClick={() => removeTodo(todo.id)}
+                        className="ml-auto"
+                        variant={"outline"}
+                        size={"icon"}
+                    >
+                        <IconTrash />
+                    </Button>
                 </li>
             ))}
         </ul>
