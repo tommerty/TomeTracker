@@ -109,65 +109,44 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 flex flex-col h-dvh">
-            <div className="sticky flex items-center top-0 w-full justify-between bg-muted px-3 rounded-b-xl shadow-lg z-50 py-1">
-                <div className="flex items-center gap-1">
-                    <div className="flex items-center gap-1 mr-3">
-                        <img
-                            src="/icons/icon-192x192.png"
-                            className="rounded-lg w-7 h-7"
-                        />
-                        <h1 className="text-xl font-bold">Tome Tracker</h1>
-                        <Link href={"/dashboard"}>Time</Link>
-                    </div>
-
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        {/* <DialogTrigger asChild>
-                            <Button>
-                                <PlusCircle
-                                    size="24"
-                                    className="cursor-pointer"
-                                />
-                            </Button>
-                        </DialogTrigger> */}
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>New Entry</DialogTitle>
-                                <div className="flex flex-col gap-2">
-                                    <TimeTracker
-                                        selectedDate={selectedDate}
-                                        onAddTimeEntry={handleAddTimeEntry}
-                                        onClose={() => setIsDialogOpen(false)}
-                                        selectedSlot={selectedSlot}
-                                    />
-                                </div>
-                            </DialogHeader>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            className="flex items-center justify-normal w-36 h-full"
-                        >
-                            <span>
-                                {isToday
-                                    ? "Today"
-                                    : selectedDate.toLocaleDateString()}
-                            </span>
-                            <ChevronDown className="ml-auto" />
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-1">
-                        <DayPicker
-                            selected={selectedDate}
-                            onSelect={handleDateChange}
-                        />
-                    </PopoverContent>
-                </Popover>
-            </div>
-            <div className="flex gap-4 relative justify-between h-full overflow-hidden py-3">
+        <div className="flex flex-col gap-3 h-full">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>New Entry</DialogTitle>
+                        <div className="flex flex-col gap-2">
+                            <TimeTracker
+                                selectedDate={selectedDate}
+                                onAddTimeEntry={handleAddTimeEntry}
+                                onClose={() => setIsDialogOpen(false)}
+                                selectedSlot={selectedSlot}
+                            />
+                        </div>
+                    </DialogHeader>
+                </DialogContent>
+            </Dialog>
+            <Popover>
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className="flex items-center justify-normal w-36 ml-auto"
+                    >
+                        <span>
+                            {isToday
+                                ? "Today"
+                                : selectedDate.toLocaleDateString()}
+                        </span>
+                        <ChevronDown className="ml-auto" />
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-1">
+                    <DayPicker
+                        selected={selectedDate}
+                        onSelect={handleDateChange}
+                    />
+                </PopoverContent>
+            </Popover>
+            <div className="flex gap-4 relative justify-between h-full overflow-hidden">
                 <div className="w-1/2 overflow-auto h-full relative space-y-9">
                     <div className="">
                         <DailyBreakdown

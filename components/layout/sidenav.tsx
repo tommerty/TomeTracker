@@ -1,25 +1,33 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import * as Icons from "@tabler/icons-react";
-
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Separator } from "../ui/separator";
+
 interface Props {
     children: React.ReactNode;
 }
+
 export const SideNav = ({ children }: Props) => {
     return (
         <div className="flex bg-background">
             <Sidebar />
-            <div className="w-full">{children}</div>
+            <div className="w-full h-dvh p-2">{children}</div>
         </div>
     );
 };
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
-    const [selected, setSelected] = useState("Dashboard");
+    const pathname = usePathname();
+    const [selected, setSelected] = useState(pathname);
+
+    useEffect(() => {
+        setSelected(pathname);
+    }, [pathname]);
 
     return (
         <motion.nav
@@ -38,6 +46,7 @@ const Sidebar = () => {
                 <Option
                     Icon={Icons.IconClock}
                     title="Time Tracking"
+                    route="/dashboard"
                     selected={selected}
                     setSelected={setSelected}
                     open={open}
@@ -45,6 +54,7 @@ const Sidebar = () => {
                 <Option
                     Icon={Icons.IconListCheck}
                     title="Todo"
+                    route="/todo"
                     selected={selected}
                     setSelected={setSelected}
                     open={open}
@@ -55,9 +65,11 @@ const Sidebar = () => {
                 <Option
                     Icon={Icons.IconBrandGithub}
                     title="GitHub"
+                    route="https://github.com/tommerty/TomeTracker"
                     selected={selected}
                     setSelected={setSelected}
                     open={open}
+                    external
                 />
             </div>
         </motion.nav>
@@ -67,44 +79,58 @@ const Sidebar = () => {
 const Option = ({
     Icon,
     title,
+    route,
     selected,
     setSelected,
     open,
+    external,
 }: {
     Icon: any;
     title: string;
+    route: string;
     selected: string;
     setSelected: Dispatch<SetStateAction<string>>;
     open: boolean;
+    external?: boolean;
 }) => {
+    const handleClick = () => {
+        setSelected(route);
+    };
+
+    const linkProps = external
+        ? { href: route, target: "_blank", rel: "noopener noreferrer" }
+        : { href: route };
+
     return (
-        <motion.button
-            layout
-            onClick={() => setSelected(title)}
-            className={`relative flex h-10 w-full items-center rounded-md transition-colors ${
-                selected === title
-                    ? "bg-accent text-foreground"
-                    : "text-foreground/50 hover:bg-accent hover:text-foreground"
-            }`}
-        >
-            <motion.div
+        <Link {...linkProps}>
+            <motion.a
                 layout
-                className="grid h-full w-10 place-content-center text-lg"
+                onClick={handleClick}
+                className={`relative flex h-10 w-full items-center rounded-md transition-colors ${
+                    selected === route
+                        ? "bg-accent text-foreground"
+                        : "text-foreground/50 hover:bg-accent hover:text-foreground"
+                }`}
             >
-                <Icon />
-            </motion.div>
-            {open && (
-                <motion.span
+                <motion.div
                     layout
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.125 }}
-                    className="text-xs font-medium"
+                    className="grid h-full w-10 place-content-center text-lg"
                 >
-                    {title}
-                </motion.span>
-            )}
-        </motion.button>
+                    <Icon />
+                </motion.div>
+                {open && (
+                    <motion.span
+                        layout
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.125 }}
+                        className="text-xs font-medium"
+                    >
+                        {title}
+                    </motion.span>
+                )}
+            </motion.a>
+        </Link>
     );
 };
 
