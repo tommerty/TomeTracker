@@ -1,15 +1,18 @@
-// components/weekly/WeekView.tsx
 import React from "react";
 import { Calendar, momentLocalizer, Event } from "react-big-calendar";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import { TimeEntry } from "@/types/TimeEntry";
 
 const localizer = momentLocalizer(moment);
+const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 interface WeekViewProps {
     timeEntries: TimeEntry[];
     onSelectSlot: (slotInfo: { start: Date; end: Date }) => void;
+    onTimeEntriesChange: (updatedEntries: TimeEntry[]) => void;
     getCategoryColor: (categoryName: string) => string;
     selectedDate: Date;
 }
@@ -19,6 +22,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
     onSelectSlot,
     getCategoryColor,
     selectedDate,
+    onTimeEntriesChange,
 }) => {
     const events: Event[] = timeEntries.map((entry) => ({
         id: entry.id,
@@ -29,8 +33,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
     }));
 
     const eventStyleGetter = (event: Event) => {
-        // @ts-ignore
-        const backgroundColor = event.color || "#3174ad";
+        const backgroundColor = (event as any).color || "#3174ad";
         return {
             style: {
                 backgroundColor,
@@ -41,14 +44,46 @@ export const WeekView: React.FC<WeekViewProps> = ({
         };
     };
 
+    const handleEventResize = ({ event, start, end }: any) => {
+        const updatedTimeEntries = timeEntries.map((entry) => {
+            if (entry.id === event.id) {
+                return {
+                    ...entry,
+                    startTime: start,
+                    endTime: end,
+                };
+            }
+            return entry;
+        });
+        onTimeEntriesChange(updatedTimeEntries);
+    };
+
+    const handleEventDrop = ({ event, start, end }: any) => {
+        const updatedTimeEntries = timeEntries.map((entry) => {
+            if (entry.id === event.id) {
+                return {
+                    ...entry,
+                    startTime: start,
+                    endTime: end,
+                };
+            }
+            return entry;
+        });
+        onTimeEntriesChange(updatedTimeEntries);
+    };
+    const getEventStart = (event: Event) => event.start as Date;
+    const getEventEnd = (event: Event) => event.end as Date;
     return (
         <div className="h-full">
-            <Calendar
+            <DragAndDropCalendar
                 localizer={localizer}
                 events={events}
-                startAccessor="start"
-                endAccessor="end"
+                startAccessor={getEventStart}
+                endAccessor={getEventEnd}
                 selectable
+                resizable
+                onEventDrop={handleEventDrop}
+                onEventResize={handleEventResize}
                 onSelectSlot={onSelectSlot}
                 view="day"
                 toolbar={false}

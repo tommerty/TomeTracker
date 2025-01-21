@@ -24,12 +24,14 @@ type TodoListProps = {
     todos: Todo[];
     removeTodo: (id: number) => void;
     toggleTodo: (id: number) => void;
+    children?: React.ReactNode;
 };
 
 const TodoList: React.FC<TodoListProps> = ({
     todos,
     removeTodo,
     toggleTodo,
+    children,
 }) => {
     const uncompletedTodos = todos.filter((todo) => !todo.completed);
     const completedTodos = todos.filter((todo) => todo.completed);
@@ -63,9 +65,10 @@ const TodoList: React.FC<TodoListProps> = ({
     return (
         <div className="flex flex-col gap-4">
             <Card>
-                <CardHeader>
+                <div className="p-6">{children && children}</div>
+                {/* <CardHeader>
                     <CardTitle>Todo</CardTitle>
-                </CardHeader>
+                </CardHeader> */}
                 <CardContent>
                     <ul className="list-none p-0">
                         {uncompletedTodos.map(renderTodoItem)}
