@@ -109,7 +109,7 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="flex flex-col gap-3 h-full">
+        <div className="flex flex-col gap-3 h-full overflow-hidden px-6">
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
                     <DialogHeader>

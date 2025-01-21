@@ -4,9 +4,15 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SideNav } from "@/components/layout/sidenav";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { cookies } from "next/headers";
+import { Button } from "@/components/ui/button";
+import MobileNav from "@/components/MobileBottom";
 
 const montserrat = Montserrat({ subsets: ["latin"], display: "swap" });
 const inter = Inter({
@@ -46,8 +52,9 @@ async function RootLayout({
             >
                 <SidebarProvider defaultOpen={defaultOpen}>
                     <AppSidebar />
-                    <SidebarInset className="w-full h-dvh py-2 px-6">
+                    <SidebarInset className="relative w-full h-dvh pt-2 max-h-full overflow-hidden space-y-3">
                         {children}
+                        <MobileNav />
                     </SidebarInset>
                 </SidebarProvider>
             </body>

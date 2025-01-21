@@ -36,15 +36,16 @@ export default function Page() {
     };
 
     return (
-        <div className="flex flex-col gap-3 h-full overflow-hidden">
-            <TodoInput addTodo={addTodo} />
+        <div className="flex flex-col gap-3 h-full overflow-hidden px-6">
             <div className="flex flex-col gap-3 overflow-y-auto">
                 <Suspense fallback={<div>Loading...</div>}>
                     <TodoList
                         todos={todos}
                         removeTodo={removeTodo}
                         toggleTodo={toggleTodo}
-                    />
+                    >
+                        <TodoInput addTodo={addTodo} />
+                    </TodoList>
                 </Suspense>
             </div>
         </div>
