@@ -169,6 +169,7 @@ const DashboardPage = () => {
                         timeEntries={timeEntries}
                         onSelectSlot={handleSelectSlot}
                         selectedDate={selectedDate}
+                        onTimeEntriesChange={setTimeEntries}
                     />
                 </div>
             </div>
