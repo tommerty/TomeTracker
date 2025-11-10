@@ -1,6 +1,7 @@
 {
     "name": "TomeTracker",
     "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+    "runArgs": ["--name=tometracker-devcontainer"],
 
     "features": {
         "ghcr.io/devcontainers/features/node:1": {
